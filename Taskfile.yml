@@ -1,0 +1,34 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  RIPGREP_VERSION: 13.0.0
+  FD_VERSION: 8.2.1
+
+tasks:
+  provision:
+    deps:
+      - install-ripgrep
+      - install-fd
+
+  install-ripgrep:
+    dir: /tmp
+    cmds:
+      - "curl -LO https://github.com/BurntSushi/ripgrep/releases/download/{{.RIPGREP_VERSION}}/ripgrep_{{.RIPGREP_VERSION}}_amd64.deb"
+      - flock dpkg.lock -c "sudo dpkg -i ripgrep_{{.RIPGREP_VERSION}}_amd64.deb"
+      - rm -f ripgrep_{{.RIPGREP_VERSION}}_amd64.deb
+    status:
+      - which rg
+      - rg --version | grep "{{.RIPGREP_VERSION}}"
+
+  install-fd:
+    dir: /tmp
+    cmds:
+      - "curl -LO https://github.com/sharkdp/fd/releases/download/v{{.FD_VERSION}}/fd_{{.FD_VERSION}}_amd64.deb"
+      - flock dpkg.lock -c "sudo dpkg -i fd_{{.FD_VERSION}}_amd64.deb"
+      - rm -f fd_{{.FD_VERSION}}_amd64.deb
+    status:
+      - which fd
+      - fd --version | grep "{{.FD_VERSION}}"
+
