@@ -10,9 +10,25 @@ vars:
 tasks:
   provision:
     deps:
+      - install-apt
       - install-code
       - install-fd
       - install-ripgrep
+
+  install-apt:
+    cmds:
+      - sudo add-apt-repository -y ppa:git-core/ppa
+      - flock dpkg.lock -c "sudo apt-get update -yqq"
+      - flock dpkg.lock -c "sudo apt-get install -y
+          build-essential
+          ca-certificates
+          ctop
+          curl
+          global
+          git
+          htop
+          tmux
+          xsel"
 
   install-code:
     dir: /tmp
@@ -22,7 +38,7 @@ tasks:
       - rm -f code_{{.CODE_VERSION}}_amd64.deb
     status:
       - which code
-      - code --version | grep "{{.FD_VERSION}}"
+      - code --version | grep "{{.CODE_VERSION}}"
 
   install-fd:
     dir: /tmp
