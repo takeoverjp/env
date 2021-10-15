@@ -18,11 +18,13 @@ tasks:
 
   config-git:
     cmds:
-      - git config --global user.name "Kondo Takeo"
+      - git config --global pull.ff only
       - git config --global user.email takeoverjp@gmail.com
+      - git config --global user.name "Kondo Takeo"
     status:
-      - git config --get user.name
+      - git config --get pull.ff
       - git config --get user.email
+      - git config --get user.name
 
   install-apt:
     cmds:
