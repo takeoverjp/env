@@ -1,5 +1,7 @@
 #!/bin/bash -eux
 
+sudo -v
+
 function install_go_task() {
     sudo sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 }
