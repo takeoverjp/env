@@ -10,10 +10,19 @@ vars:
 tasks:
   provision:
     deps:
+      - config-git
       - install-apt
       - install-code
       - install-fd
       - install-ripgrep
+
+  config-git:
+    cmds:
+      - git config --global user.name "Kondo Takeo"
+      - git config --global user.email takeoverjp@gmail.com
+    status:
+      - git config --get user.name
+      - git config --get user.email
 
   install-apt:
     cmds:
@@ -31,7 +40,6 @@ tasks:
           xsel"
 
   install-code:
-    dir: /tmp
     cmds:
       - "curl -L https://update.code.visualstudio.com/{{.CODE_VERSION}}/linux-deb-x64/stable -o code_{{.CODE_VERSION}}_amd64.deb"
       - flock dpkg.lock -c "sudo dpkg -i code_{{.CODE_VERSION}}_amd64.deb"
@@ -41,7 +49,6 @@ tasks:
       - code --version | grep "{{.CODE_VERSION}}"
 
   install-fd:
-    dir: /tmp
     cmds:
       - "curl -LO https://github.com/sharkdp/fd/releases/download/v{{.FD_VERSION}}/fd_{{.FD_VERSION}}_amd64.deb"
       - flock dpkg.lock -c "sudo dpkg -i fd_{{.FD_VERSION}}_amd64.deb"
@@ -51,7 +58,6 @@ tasks:
       - fd --version | grep "{{.FD_VERSION}}"
 
   install-ripgrep:
-    dir: /tmp
     cmds:
       - "curl -LO https://github.com/BurntSushi/ripgrep/releases/download/{{.RIPGREP_VERSION}}/ripgrep_{{.RIPGREP_VERSION}}_amd64.deb"
       - flock dpkg.lock -c "sudo dpkg -i ripgrep_{{.RIPGREP_VERSION}}_amd64.deb"
