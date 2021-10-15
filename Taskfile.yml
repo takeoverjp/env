@@ -15,6 +15,7 @@ tasks:
       - install-code
       - install-fd
       - install-ripgrep
+      - install-rust
 
   config-git:
     cmds:
@@ -67,3 +68,13 @@ tasks:
     status:
       - which rg
       - rg --version | grep "{{.RIPGREP_VERSION}}"
+
+  install-rust:
+    cmds:
+      - curl -L --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    status:
+      - which cargo
+      - which clippy-driver
+      - which rustc
+      - which rustfmt
+      - which rustup
